@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct TimerPreset: Identifiable, Codable, Equatable, Hashable {
+    var id = UUID()
+    var label: String
+    var duration: TimeInterval // in seconds
+}

@@ -55,9 +55,22 @@
 		3410CC312E93174200EDB6C6 /* TresholdTimer Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TresholdTimer Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3415B14E2E9AFF8900AB0E16 /* Exceptions for "TresholdTimer Watch App" folder in "TresholdTimer Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"TresholdTimer-Watch-App-Info.plist",
+			);
+			target = 3410CC172E93173F00EDB6C6 /* TresholdTimer Watch App */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3410CC1C2E93173F00EDB6C6 /* TresholdTimer Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3415B14E2E9AFF8900AB0E16 /* Exceptions for "TresholdTimer Watch App" folder in "TresholdTimer Watch App" target */,
+			);
 			path = "TresholdTimer Watch App";
 			sourceTree = "<group>";
 		};
@@ -457,7 +470,9 @@
 				DEVELOPMENT_TEAM = 664TU2BMP7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TresholdTimer-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TresholdTimer;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app uses your heart rate to alert you when it drops below your threshold.\nThis app uses your heart rate to alert you when it drops below your threshold.\nThis app uses your heart rate to alert you when it drops below your threshold.\nThis app uses your heart rate to alert you when it drops below your threshold.\nThis app uses your heart rate to alert when it drops below the threshold.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -476,7 +491,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.6;
 			};
 			name = Debug;
 		};
@@ -490,7 +505,9 @@
 				DEVELOPMENT_TEAM = 664TU2BMP7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TresholdTimer-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TresholdTimer;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app uses your heart rate to alert you when it drops below your threshold.\nThis app uses your heart rate to alert you when it drops below your threshold.\nThis app uses your heart rate to alert you when it drops below your threshold.\nThis app uses your heart rate to alert you when it drops below your threshold.\nThis app uses your heart rate to alert when it drops below the threshold.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -510,7 +527,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.6;
 			};
 			name = Release;
 		};
@@ -520,9 +537,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 664TU2BMP7;
-				INFOPLIST_KEY_CFBundleDisplayName = TresholdTimer;
+				INFOPLIST_KEY_CFBundleDisplayName = ThresholdTimer;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = hDev.TresholdTimer;
+				PRODUCT_BUNDLE_IDENTIFIER = hDev.ThresholdTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -537,9 +554,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 664TU2BMP7;
-				INFOPLIST_KEY_CFBundleDisplayName = TresholdTimer;
+				INFOPLIST_KEY_CFBundleDisplayName = ThresholdTimer;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = hDev.TresholdTimer;
+				PRODUCT_BUNDLE_IDENTIFIER = hDev.ThresholdTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
