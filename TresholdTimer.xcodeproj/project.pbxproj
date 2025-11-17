@@ -55,22 +55,9 @@
 		3410CC312E93174200EDB6C6 /* TresholdTimer Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TresholdTimer Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		3415B14E2E9AFF8900AB0E16 /* Exceptions for "TresholdTimer Watch App" folder in "TresholdTimer Watch App" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"TresholdTimer-Watch-App-Info.plist",
-			);
-			target = 3410CC172E93173F00EDB6C6 /* TresholdTimer Watch App */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3410CC1C2E93173F00EDB6C6 /* TresholdTimer Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				3415B14E2E9AFF8900AB0E16 /* Exceptions for "TresholdTimer Watch App" folder in "TresholdTimer Watch App" target */,
-			);
 			path = "TresholdTimer Watch App";
 			sourceTree = "<group>";
 		};
@@ -465,6 +452,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "TresholdTimer Watch App/TresholdTimer Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 664TU2BMP7;
@@ -500,6 +488,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "TresholdTimer Watch App/TresholdTimer Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 664TU2BMP7;
