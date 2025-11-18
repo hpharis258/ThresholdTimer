@@ -20,6 +20,7 @@ struct Manual: View {
             .frame(height: 50)
             .pickerStyle(.wheel)
             .disabled(timerRunning)
+            .focusable(true)
 
             if timeRemaining > 0 {
                 Text("\(Int(timeRemaining))s")
@@ -53,6 +54,7 @@ struct Manual: View {
     
     private func startTimer() {
         guard let preset = selectedPreset else { return }
+        stopTimer()
         timeRemaining = preset.duration
         timerRunning = true
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
@@ -63,6 +65,9 @@ struct Manual: View {
                 WKInterfaceDevice.current().play(.notification)
                 timeRemaining = preset.duration // reset for quick restart
             }
+        }
+        if let timer = timer {
+            RunLoop.main.add(timer, forMode: .common)
         }
     }
     

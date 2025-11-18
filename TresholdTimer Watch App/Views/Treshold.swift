@@ -4,7 +4,7 @@ import WatchKit
 struct Treshold: View {
     @StateObject private var heartMonitor = HeartRateMonitor.shared
     @State private var isRunning = false
-    @State private var threshold: Double = UserDefaults.standard.double(forKey: "thresholdValue") == 0 ? 100 : UserDefaults.standard.double(forKey: "thresholdValue")
+    @AppStorage("thresholdValue") private var threshold: Double = 100
 
     var body: some View {
         VStack(spacing: 12) {
