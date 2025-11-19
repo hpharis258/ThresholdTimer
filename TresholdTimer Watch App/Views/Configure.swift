@@ -75,7 +75,7 @@ struct Configure: View {
                 Divider()
                 
                 Text("Threshold: \(Int(threshold)) bpm")
-                Slider(value: $threshold, in: 40...200, step: 1)
+                Slider(value: $threshold, in: 40...200, step: 1);
             }
             .padding()
         }

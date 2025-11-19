@@ -20,7 +20,6 @@ struct Treshold: View {
             .buttonStyle(.borderedProminent)
         }
         .onAppear {
-            // ✅ just call the method from the helper
             heartMonitor.requestAuthorization()
         }
         .onChange(of: heartMonitor.currentHeartRate) { oldValue, newValue in

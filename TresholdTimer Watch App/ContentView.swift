@@ -47,7 +47,6 @@ struct TileView: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(Color.accentColor.opacity(0.2))
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
