@@ -6,6 +6,15 @@ struct Treshold: View {
     @State private var isRunning = false
     @State private var isAuthorized = false
     @AppStorage("thresholdValue") private var threshold: Double = 100
+
+    @AppStorage("beepIntervalSeconds") private var beepIntervalSeconds: Double = 1.0
+
+    private var clampedBeepInterval: UInt64 {
+        // Clamp between 1 and 10 seconds, convert to nanoseconds
+        let seconds = min(max(beepIntervalSeconds, 1.0), 10.0)
+        return UInt64(seconds * 1_000_000_000)
+    }
+    
     @State private var hapticTask: Task<Void, Never>? = nil
 
     var body: some View {
@@ -49,14 +58,15 @@ struct Treshold: View {
                 // Play a simple, repeatable haptic
                 WKInterfaceDevice.current().play(.notification)
                 // Sleep for a short interval to avoid spamming
-                try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+                try? await Task.sleep(nanoseconds: clampedBeepInterval)
                 // Check condition safely on the main actor
                 let shouldContinue = await MainActor.run {
                     isRunning && heartMonitor.currentHeartRate < threshold
                 }
                 if !shouldContinue {
                     // Debounce transient changes before stopping
-                    try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 second
+                    let debounce = max(clampedBeepInterval / 2, UInt64(300_000_000))
+                    try? await Task.sleep(nanoseconds: debounce)
                     let recheck = await MainActor.run {
                         isRunning && heartMonitor.currentHeartRate < threshold
                     }
@@ -90,3 +100,4 @@ struct Treshold: View {
         }
     }
 }
+

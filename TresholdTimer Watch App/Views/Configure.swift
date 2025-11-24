@@ -13,6 +13,7 @@ struct Configure: View {
     @State private var newLabel = ""
     @State private var newDuration = 30.0
     @AppStorage("thresholdValue") private var threshold: Double = 100
+    @AppStorage("beepIntervalSeconds") private var beepIntervalSeconds: Double = 1.0
     
     private let presetsKey = "timerPresets"
 
@@ -76,6 +77,11 @@ struct Configure: View {
                 
                 Text("Threshold: \(Int(threshold)) bpm")
                 Slider(value: $threshold, in: 40...200, step: 1);
+                
+                Divider()
+
+                Text("Beep Interval: \(Int(beepIntervalSeconds))s")
+                Slider(value: $beepIntervalSeconds, in: 1...10, step: 1)
             }
             .padding()
         }
