@@ -1,13 +1,15 @@
 import SwiftUI
 import WatchKit
 import Combine
+import UserNotifications
 
 struct Manual: View {
     @State private var timeRemaining: TimeInterval = 0
     @State private var timerRunning = false
-    @State private var timer: Timer?
+    @State private var displayTimer: Timer?
+    @State private var endDate: Date?
     @State private var selectedPreset: TimerPreset?
-    
+
     @StateObject private var settings = AppSettings.shared
 
     var body: some View {
@@ -40,12 +42,20 @@ struct Manual: View {
         }
         .onAppear {
             if let first = settings.presets.first {
-                selectedPreset = first
-                timeRemaining = first.duration
+                if selectedPreset == nil {
+                    selectedPreset = first
+                    timeRemaining = first.duration
+                }
             }
+            // Ensure timeRemaining reflects any existing endDate
+            updateRemaining()
+            // Request notification permission (safe to call repeatedly)
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
         }
         .onChange(of: selectedPreset) { oldValue, newValue in
-            timeRemaining = newValue?.duration ?? 30
+            if !timerRunning {
+                timeRemaining = newValue?.duration ?? 30
+            }
         }
         .onDisappear {
             stopTimer()
@@ -55,26 +65,83 @@ struct Manual: View {
     private func startTimer() {
         guard let preset = selectedPreset else { return }
         stopTimer()
-        timeRemaining = preset.duration
+        let now = Date()
+        endDate = now.addingTimeInterval(preset.duration)
         timerRunning = true
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-            } else {
-                stopTimer()
-                WKInterfaceDevice.current().play(.notification)
-                timeRemaining = preset.duration // reset for quick restart
-            }
+
+        // Schedule a lightweight UI refresh timer (not relied upon for correctness)
+        displayTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
+            updateRemaining()
         }
-        if let timer = timer {
-            RunLoop.main.add(timer, forMode: .common)
+        if let displayTimer = displayTimer {
+            RunLoop.main.add(displayTimer, forMode: .common)
         }
+
+        // Schedule local notification for completion
+        if let endDate {
+            scheduleCompletionNotification(at: endDate)
+        }
+
+        updateRemaining()
     }
-    
+
     private func stopTimer() {
         timerRunning = false
-        timer?.invalidate()
-        timer = nil
+        displayTimer?.invalidate()
+        displayTimer = nil
+        endDate = nil
+        cancelCompletionNotification()
+        // Reset timeRemaining to selected preset for quick restart
+        if let preset = selectedPreset {
+            timeRemaining = preset.duration
+        }
+    }
+
+    private func updateRemaining() {
+        if let endDate {
+            let remaining = endDate.timeIntervalSinceNow
+            if remaining > 0 {
+                timeRemaining = remaining
+            } else {
+                timeRemaining = 0
+                finishTimer()
+            }
+        } else {
+            // No active timer; keep current preset duration if available
+            if let preset = selectedPreset {
+                timeRemaining = min(timeRemaining, preset.duration)
+            }
+        }
+    }
+
+    private func finishTimer() {
+        // Clean up UI timer and state but keep last selected preset
+        timerRunning = false
+        displayTimer?.invalidate()
+        displayTimer = nil
+        endDate = nil
+
+        WKInterfaceDevice.current().play(.notification)
+        // Reset to preset duration for quick restart
+        if let preset = selectedPreset {
+            timeRemaining = preset.duration
+        }
+    }
+
+    private func scheduleCompletionNotification(at date: Date) {
+        let content = UNMutableNotificationContent()
+        content.title = "Timer Done"
+        content.body = selectedPreset?.label ?? "Your timer has finished."
+        content.sound = .default
+
+        let interval = max(1, date.timeIntervalSinceNow)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
+        let request = UNNotificationRequest(identifier: "manual-timer-complete", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+
+    private func cancelCompletionNotification() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["manual-timer-complete"])
     }
 }
 
