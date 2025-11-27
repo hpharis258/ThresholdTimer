@@ -16,6 +16,7 @@ struct Treshold: View {
     }
     
     @State private var hapticTask: Task<Void, Never>? = nil
+    @State private var runtimeSession: WKExtendedRuntimeSession? = nil
 
     var body: some View {
         VStack(spacing: 12) {
@@ -45,6 +46,7 @@ struct Treshold: View {
         }
         .onDisappear {
             stopHaptics()
+            stopExtendedRuntimeIfNeeded()
         }
     }
     
@@ -89,15 +91,57 @@ struct Treshold: View {
             isRunning = false
             heartMonitor.stopMonitoring()
             stopHaptics()
+            stopExtendedRuntimeIfNeeded()
             WKInterfaceDevice.current().play(.click)
         } else {
             // Starting
             isRunning = true
+            startExtendedRuntimeIfNeeded()
             heartMonitor.startMonitoring()
             // Evaluate immediately in case HR is already below threshold
             startHapticsIfNeeded()
             WKInterfaceDevice.current().play(.start)
         }
     }
+    
+    // MARK: - Extended Runtime Session Management
+    private func startExtendedRuntimeIfNeeded() {
+        guard runtimeSession == nil else { return }
+        let session = WKExtendedRuntimeSession()
+        session.delegate = ExtendedRuntimeDelegate(onInvalidate: {
+            // When the session ends or is invalidated, stop haptics to avoid a stuck loop
+            Task { @MainActor in
+                stopHaptics()
+                isRunning = false
+                heartMonitor.stopMonitoring()
+            }
+        })
+        runtimeSession = session
+        session.start()
+    }
+
+    private func stopExtendedRuntimeIfNeeded() {
+        runtimeSession?.invalidate()
+        runtimeSession = nil
+    }
 }
 
+final class ExtendedRuntimeDelegate: NSObject, WKExtendedRuntimeSessionDelegate {
+    private let onInvalidate: () -> Void
+
+    init(onInvalidate: @escaping () -> Void) {
+        self.onInvalidate = onInvalidate
+    }
+
+    func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        // No-op
+    }
+
+    func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        onInvalidate()
+    }
+
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
+        onInvalidate()
+    }
+}
